@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nightshade Staff Guide</title>
+  <style>
+    :root{
+      --bg:#07050b;
+      --panel:#120d1c;
+      --panel2:#1a1029;
+      --text:#f4efff;
+      --muted:#b9a9ca;
+      --purple:#a855f7;
+      --purple2:#6d28d9;
+      --crimson:#e11d48;
+      --orange:#ff7a18;
+      --line:rgba(168,85,247,.26);
+      --glow:0 0 28px rgba(168,85,247,.22);
+      --glow2:0 0 34px rgba(225,29,72,.15);
+    }
+
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      color:var(--text);
+      font-family:Inter,Segoe UI,Arial,sans-serif;
+      background:
+        radial-gradient(circle at 20% 0%,rgba(168,85,247,.24),transparent 35%),
+        radial-gradient(circle at 95% 12%,rgba(255,122,24,.16),transparent 28%),
+        radial-gradient(circle at 80% 90%,rgba(225,29,72,.16),transparent 32%),
+        var(--bg);
+      line-height:1.65;
+    }
+
+    body::before{
+      content:"";
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      background-image:
+        linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),
+        linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);
+      background-size:44px 44px;
+      mask-image:linear-gradient(to bottom,rgba(0,0,0,.7),transparent 78%);
+    }
+
+    .layout{display:grid;grid-template-columns:310px 1fr;min-height:100vh}
+
+    aside{
+      position:sticky;
+      top:0;
+      height:100vh;
+      overflow:auto;
+      padding:22px;
+      background:rgba(8,5,13,.92);
+      border-right:1px solid var(--line);
+      backdrop-filter:blur(14px);
+      z-index:5;
+    }
+
+    .brand{
+      padding:18px;
+      border:1px solid var(--line);
+      border-radius:24px;
+      background:linear-gradient(145deg,rgba(168,85,247,.13),rgba(225,29,72,.08));
+      box-shadow:var(--glow);
+      text-align:center;
+      margin-bottom:16px;
+    }
+
+    .brand img{width:170px;max-width:100%;filter:drop-shadow(0 0 22px rgba(168,85,247,.35))}
+    .brand h1{font-family:Georgia,serif;margin:8px 0 0;font-size:24px;letter-spacing:.5px}
+    .brand p{margin:4px 0 0;color:var(--muted);font-size:13px}
+
+    .search-wrap{position:relative;margin:16px 0}
+    #searchInput{
+      width:100%;
+      padding:12px 14px;
+      border-radius:14px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.05);
+      color:var(--text);
+      outline:none;
+    }
+    #searchInput:focus{box-shadow:0 0 0 3px rgba(168,85,247,.16)}
+
+    nav details{
+      border:1px solid rgba(168,85,247,.13);
+      border-radius:14px;
+      margin:8px 0;
+      background:rgba(255,255,255,.025);
+      overflow:hidden;
+    }
+    nav summary{
+      cursor:pointer;
+      padding:12px 13px;
+      color:#efe7ff;
+      font-weight:700;
+      list-style:none;
+    }
+    nav summary::-webkit-details-marker{display:none}
+    nav summary::after{content:"▾";float:right;color:var(--purple)}
+    nav details[open] summary::after{content:"▴"}
+    nav a{
+      display:block;
+      text-decoration:none;
+      color:var(--muted);
+      padding:8px 18px 9px 24px;
+      font-size:14px;
+      border-top:1px solid rgba(255,255,255,.04);
+    }
+    nav a:hover{color:#fff;background:rgba(168,85,247,.12)}
+
+    main{padding:42px 6vw 90px;max-width:1300px}
+
+    .hero{
+      position:relative;
+      overflow:hidden;
+      text-align:center;
+      padding:60px 34px;
+      border:1px solid var(--line);
+      border-radius:34px;
+      background:
+        linear-gradient(rgba(8,5,13,.76),rgba(8,5,13,.9)),
+        radial-gradient(circle at 50% 0%,rgba(168,85,247,.28),transparent 44%),
+        linear-gradient(135deg,rgba(109,40,217,.2),rgba(225,29,72,.09));
+      box-shadow:var(--glow),var(--glow2);
+      margin-bottom:30px;
+    }
+    .hero::before{
+      content:"";
+      position:absolute;
+      inset:-80px;
+      background:radial-gradient(circle at center,rgba(255,255,255,.08),transparent 45%);
+      pointer-events:none;
+    }
+    .hero img{position:relative;width:min(430px,85%);filter:drop-shadow(0 0 30px rgba(168,85,247,.38))}
+    .eyebrow{color:var(--purple);text-transform:uppercase;letter-spacing:3px;font-weight:800;font-size:12px}
+    h1,h2,h3{font-family:Georgia,serif;line-height:1.2}
+    .hero h1{position:relative;font-size:clamp(42px,7vw,86px);margin:8px 0 10px}
+    .hero p{position:relative;color:var(--muted);max-width:850px;margin:0 auto;font-size:18px}
+
+    .stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin:26px 0}
+    .stat{padding:18px;border:1px solid var(--line);border-radius:22px;background:rgba(18,13,28,.72);text-align:center}
+    .stat strong{display:block;font-size:24px;color:#fff}.stat span{color:var(--muted);font-size:13px}
+
+    section{
+      margin:22px 0;
+      padding:30px;
+      border:1px solid var(--line);
+      border-radius:28px;
+      background:rgba(18,13,28,.78);
+      box-shadow:0 18px 50px rgba(0,0,0,.2);
+    }
+    section:hover{box-shadow:var(--glow)}
+    section h2{font-size:34px;margin:0 0 10px}
+    section h3{font-size:22px;margin:22px 0 8px;color:#fff}
+    p,li{color:var(--muted)}
+    .badge{display:inline-block;padding:5px 11px;border-radius:999px;border:1px solid var(--line);color:var(--purple);font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+    .divider{height:1px;background:linear-gradient(90deg,transparent,var(--purple),transparent);margin:22px 0}
+    .grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+    .card{padding:18px;border:1px solid rgba(168,85,247,.2);border-radius:20px;background:linear-gradient(145deg,rgba(168,85,247,.09),rgba(255,255,255,.025))}
+    .callout{padding:16px 18px;border-left:4px solid var(--purple);border-radius:16px;background:rgba(168,85,247,.1);color:#fff;margin:16px 0}
+    .danger{border-left-color:var(--crimson);background:rgba(225,29,72,.1)}
+    .fire{border-left-color:var(--orange);background:rgba(255,122,24,.1)}
+    .rule-list{padding-left:22px}.rule-list li{margin-bottom:8px}
+
+    .table-wrap{overflow:auto;border:1px solid rgba(168,85,247,.18);border-radius:18px;margin-top:14px}
+    table{width:100%;border-collapse:collapse;min-width:680px;background:rgba(0,0,0,.14)}
+    th,td{padding:13px 14px;border-bottom:1px solid rgba(255,255,255,.07);text-align:left;color:var(--muted);vertical-align:top}
+    th{color:#fff;background:rgba(168,85,247,.12)}
+    tr:hover td{background:rgba(168,85,247,.055)}
+    code{display:inline-block;padding:4px 9px;border-radius:9px;background:rgba(0,0,0,.35);color:#fff;white-space:nowrap;margin:3px 2px}
+    .command-grid{
+      display:grid;
+      grid-template-columns:repeat(3, 1fr);
+      gap:16px;
+      margin-top:18px;
+    }
+
+    @media(max-width:1200px){
+      .command-grid{grid-template-columns:repeat(2,1fr)}
+    }
+
+    @media(max-width:700px){
+      .command-grid{grid-template-columns:1fr}
+    }
+    .cmd-card{
+      border:1px solid rgba(168,85,247,.22);
+      border-radius:16px;
+      background:linear-gradient(145deg, rgba(20,10,35,.85), rgba(10,5,20,.85));
+      padding:16px 18px;
+      min-height:110px;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      transition:.25s ease;
+    }
+    .cmd-card:hover{transform:translateY(-3px);border-color:rgba(168,85,247,.55);box-shadow:0 0 18px rgba(168,85,247,.16)}
+    .cmd-card code{width:max-content;max-width:100%;margin:0 0 6px 0;padding:5px 8px;border:1px solid rgba(168,85,247,.20);background:rgba(0,0,0,.36);color:#fff;white-space:normal;word-break:break-word}
+    .cmd-card span{color:var(--muted);font-size:13px;line-height:1.35}
+    .punishment-grid{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:16px;
+      margin-top:18px;
+    }
+
+    @media(max-width:1200px){
+      .punishment-grid{grid-template-columns:repeat(2,1fr)}
+    }
+
+    @media(max-width:700px){
+      .punishment-grid{grid-template-columns:1fr}
+    }
+    .punish-card{
+      border:1px solid rgba(168,85,247,.22);
+      border-radius:16px;
+      background:linear-gradient(145deg, rgba(20,10,35,.85), rgba(10,5,20,.85));
+      padding:16px 18px;
+      min-height:180px;
+      transition:.25s ease;
+    }
+    .punish-card:hover{transform:translateY(-3px);border-color:rgba(168,85,247,.55);box-shadow:0 0 18px rgba(168,85,247,.16)}
+    .punish-card h4{margin:0 0 10px;color:#fff;font-size:16px;font-family:Georgia,serif}
+    .punish-card p{margin:5px 0;color:var(--muted);font-size:13px;line-height:1.35}
+    .punish-card strong{color:#fff}
+
+    .accordion details{border:1px solid rgba(168,85,247,.18);border-radius:18px;margin:10px 0;background:rgba(255,255,255,.025);overflow:hidden}
+    .accordion summary{cursor:pointer;padding:15px 18px;font-weight:800;color:#fff;list-style:none}
+    .accordion summary::-webkit-details-marker{display:none}
+    .accordion summary::after{content:"+";float:right;color:var(--purple);font-size:22px;line-height:1}
+    .accordion details[open] summary::after{content:"−"}
+    .accordion .inside{padding:0 18px 18px}
+
+    footer{text-align:center;color:var(--muted);padding:35px 0}
+    .hidden{display:none!important}
+
+    @media(max-width:950px){
+      .layout{grid-template-columns:1fr}
+      aside{position:relative;height:auto}
+      main{padding:24px 16px 70px}
+      .stats,.grid{grid-template-columns:1fr}
+      section{padding:22px}
+    }
+  
+    .edit-panel{
+      position:fixed;
+      right:22px;
+      bottom:22px;
+      z-index:20;
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+    }
+    .edit-panel button{
+      border:none;
+      cursor:pointer;
+      padding:12px 15px;
+      border-radius:999px;
+      color:#fff;
+      font-weight:800;
+      background:linear-gradient(135deg,var(--purple),var(--crimson));
+      box-shadow:0 0 22px rgba(168,85,247,.35);
+      transition:.25s ease;
+    }
+    .edit-panel button:hover{transform:translateY(-3px);filter:brightness(1.12)}
+    .edit-mode .editable{
+      outline:1px dashed rgba(168,85,247,.75);
+      outline-offset:5px;
+      border-radius:12px;
+      background:rgba(168,85,247,.06);
+    }
+    .edit-hint{
+      position:fixed;
+      right:22px;
+      bottom:82px;
+      z-index:20;
+      max-width:330px;
+      padding:13px 15px;
+      border:1px solid var(--line);
+      border-radius:18px;
+      background:rgba(18,13,28,.95);
+      color:var(--muted);
+      box-shadow:var(--glow);
+      display:none;
+    }
+    .edit-mode .edit-hint{display:block}
+
+    .fade-in{
+      opacity:0;
+      transform:translateY(18px);
+      transition:opacity .7s ease, transform .7s ease, box-shadow .3s ease;
+    }
+    .fade-in.visible{
+      opacity:1;
+      transform:translateY(0);
+    }
+    nav a, .card, section, .stat, .hero img{
+      transition:all .28s ease;
+    }
+    .card:hover,.stat:hover{
+      transform:translateY(-4px);
+      box-shadow:0 0 24px rgba(168,85,247,.20);
+      border-color:rgba(168,85,247,.48);
+    }
+    details[open] .inside{
+      animation:dropIn .28s ease both;
+    }
+    @keyframes dropIn{
+      from{opacity:0;transform:translateY(-6px)}
+      to{opacity:1;transform:translateY(0)}
+    }
+    @media(max-width:950px){.edit-panel{left:14px;right:14px}.edit-panel button{flex:1}.edit-hint{left:14px;right:14px;bottom:92px}}
+  </style>
+</head>
+<body>
+<div class="edit-hint">Edit mode is on. Click directly on titles, paragraphs, lists, cards, or table text to change them. Press Save when done.</div>
+<div class="edit-panel">
+  <button id="editBtn" type="button">✏️ Edit</button>
+  <button id="saveBtn" type="button">💾 Save</button>
+  <button id="resetBtn" type="button">↺ Reset</button>
+</div>
+<div class="layout">
+  <aside>
+    <div class="brand">
+      <img src="Nightshade_City_RP_logo.png" alt="Nightshade City RP Logo">
+      <h1>Nightshade</h1>
+      <p>Staff Guide • Order within the shadows</p>
+    </div>
+
+    <div class="search-wrap">
+      <input id="searchInput" type="search" placeholder="Search the guide...">
+    </div>
+
+    <nav>
+      <details open>
+        <summary>Start Here</summary>
+        <a href="#welcome">Welcome</a>
+        <a href="#onboarding">Onboarding Guide</a>
+        <a href="#mission">Mission & Mindset</a>
+        <a href="#chain">Chain of Command</a>
+        <a href="#activity">Activity Requirements</a>
+        <a href="#ranks">Staff Rankings</a>
+      </details>
+      <details open>
+        <summary>Rules</summary>
+        <a href="#staff-rules">Staff Rules</a>
+        <a href="#dos-donts">Do's & Don'ts</a>
+        <a href="#discipline">Staff Discipline</a>
+        <a href="#gang-angels">Gang Angel Rules</a>
+        <a href="#oversight">Oversight Info</a>
+      </details>
+      <details open>
+        <summary>Player Handling</summary>
+        <a href="#punishment">Punishment Handling</a>
+        <a href="#ban-guidelines">Ban Guidelines</a>
+        <a href="#community-service">Community Service</a>
+        <a href="#appeals">Appeals Process</a>
+        <a href="#evidence">Evidence & Clips</a>
+        <a href="#refunds">Refunds & Compensation</a>
+      </details>
+      <details open>
+        <summary>Tools</summary>
+        <a href="#tickets">Ticket Etiquette</a>
+        <a href="#ticket-rules">Ticket Rules</a>
+        <a href="#templates">Ticket Templates</a>
+        <a href="#faq">FAQ</a>
+        <a href="#commands">Command Guide</a>
+      </details>
+    </nav>
+  </aside>
+
+  <main>
+    <header class="hero searchable fade-in editable" id="welcome">
+      <img src="Nightshade_City_RP_logo.png" alt="Nightshade City RP Logo">
+      <div class="eyebrow">Created by Management</div>
+      <h1>Nightshade Staff Guide</h1>
+      <p>Welcome to the Nightshade Staff Team. This guide is your main resource for being a successful staff member, understanding expectations, supporting the community, and helping the city run smoothly.</p>
+      <div class="divider"></div>
+      <p><strong>Handle situations calmly. Stay professional. Be fair, but firm.</strong></p>
+    </header>
+
+    <div class="stats">
+      <div class="stat"><strong>Fair</strong><span>No favoritism</span></div>
+      <div class="stat"><strong>Calm</strong><span>No arguments</span></div>
+      <div class="stat"><strong>Firm</strong><span>Follow policy</span></div>
+      <div class="stat"><strong>Private</strong><span>No leaking</span></div>
+    </div>
+
+    <section class="searchable fade-in editable" id="onboarding">
+      <span class="badge">Onboarding</span>
+      <h2>Onboarding Guide</h2>
+      <p>New staff should be guided through expectations, Discord setup, ticket handling, logs, clips, and proper escalation.</p>
+      <div class="accordion">
+        <details open><summary>Interview Questions</summary><div class="inside"><ul class="rule-list"><li>What inspired you to apply for staff?</li><li>How old are you?</li><li>What do you mainly do in city?</li><li>Are you in any approved whitelisted gangs?</li><li>Tell us a little about yourself.</li><li>What is your occupation or study IRL?</li><li>Can you balance staff with real-life obligations?</li><li>What is your availability and timezone?</li><li>What skills can you bring to the staff team?</li><li>How do you handle stress or high-pressure situations?</li><li>How do you help maintain a respectful community?</li></ul></div></details>
+        <details><summary>Final Onboarding Steps</summary><div class="inside"><ul class="rule-list"><li>Assign the proper Discord roles.</li><li>Invite them to logs Discord and assign correct roles.</li><li>Give them this guide and have them save it.</li><li>Walk them through a practice ticket.</li><li>Show them how to rename tickets, pull logs, ping Admin+, and move tickets.</li><li>Explain clip rules and exceptions.</li></ul></div></details>
+      </div>
+    </section>
+
+    <section class="searchable fade-in editable" id="mission">
+      <span class="badge">Purpose</span>
+      <h2>Mission & Staff Mindset</h2>
+      <p>Nightshade staff are here to protect the community, support roleplay, and keep the city fair. Staff work should feel calm, consistent, and organized — never personal, messy, or emotional.</p>
+      <div class="grid">
+        <div class="card"><h3>Community First</h3><p>Every decision should help protect the experience of the city as a whole.</p></div>
+        <div class="card"><h3>Fair Before Firm</h3><p>Educate when possible, enforce when needed, and document when necessary.</p></div>
+        <div class="card"><h3>Calm Authority</h3><p>You do not need to argue to be respected. Clear, steady communication is enough.</p></div>
+      </div>
+    </section>
+
+    <section class="searchable fade-in editable" id="chain">
+      <span class="badge">Leadership</span>
+      <h2>Chain of Command</h2>
+      <p>Staff should follow chain of command to keep decisions consistent and prevent confusion.</p>
+      <div class="punishment-grid">
+        <div class="punish-card"><h4>Trial Support / Trial Mod</h4><p>Handles basic questions, observes tickets, learns logs, and escalates when unsure.</p></div>
+        <div class="punish-card"><h4>Support / Moderator</h4><p>Handles standard tickets, reports, and minor rule breaks within their permission level.</p></div>
+        <div class="punish-card"><h4>Admin</h4><p>Handles escalated situations, bans, reimbursements, and staff guidance.</p></div>
+        <div class="punish-card"><h4>Senior Admin</h4><p>Handles complex reports, appeals, disputes, and oversight-level issues.</p></div>
+        <div class="punish-card"><h4>Head Admin+</h4><p>Final decision-making, staff discipline, major appeals, policy changes, and leadership.</p></div>
+      </div>
+      <div class="callout">When in doubt, escalate. Guessing can cause bigger problems than asking for help.</div>
+    </section>
+
+    <section class="searchable fade-in editable" id="activity">
+      <span class="badge">Availability</span>
+      <h2>Staff Activity Requirements</h2>
+      <ul class="rule-list">
+        <li>Staff are expected to remain active and available when possible.</li>
+        <li>If you need a break, notify management instead of disappearing.</li>
+        <li>Tickets should not be ignored for long periods of time.</li>
+        <li>Staff should contribute to the team, not only hold the role for perks.</li>
+        <li>Repeated inactivity without notice may result in review or removal.</li>
+      </ul>
+    </section>
+
+    <section class="searchable fade-in editable" id="staff-rules">
+      <span class="badge">Core Rules</span>
+      <h2>Staff Rules</h2>
+      <div class="grid">
+        <div class="card"><h3>Authority In-City</h3><p>Never use staff title, rank, or influence for in-city advantages. In RP, you are treated like any other civilian.</p></div>
+        <div class="card"><h3>Stay In Character</h3><p>Remain fully in character unless there is a cheater, modder, or severe situation requiring immediate intervention.</p></div>
+        <div class="card"><h3>Report Properly</h3><p>Use the official ticket system and submit evidence. Do not call staff for help mid-RP.</p></div>
+      </div>
+      <div class="accordion">
+        <details><summary>Professional Conduct</summary><div class="inside"><p>Remain respectful even if a player is rude. No sarcasm, emotional arguing, insults, or power-tripping.</p></div></details>
+        <details><summary>Admin Powers During RP</summary><div class="inside"><p>Do not spawn items, heal/revive yourself, teleport for RP advantage, give money/weapons, or remove consequences.</p></div></details>
+        <details><summary>Teleporting & Visibility</summary><div class="inside"><p>Do not teleport into active RP without approval. Never use admin powers where civilians can see them.</p></div></details>
+        <details><summary>Staff VC & Push-To-Talk</summary><div class="inside"><p>Staff must remain in staff VC while in-city and use push-to-talk or mute when roleplaying. Double Discording is prohibited.</p></div></details>
+        <details><summary>Favoritism & Confidentiality</summary><div class="inside"><p>Zero tolerance for favoritism. Staff chats, tickets, punishments, investigations, and decisions are confidential.</p></div></details>
+      </div>
+    </section>
+
+    <section class="searchable fade-in editable" id="dos-donts">
+      <span class="badge">Quick Reference</span>
+      <h2>Staff Do's & Don'ts</h2>
+      <div class="grid">
+        <div class="card"><h3>Do</h3><p>Stay calm, ask questions, review evidence, explain decisions, and escalate when needed.</p></div>
+        <div class="card"><h3>Do</h3><p>Document punishments, keep tickets organized, and communicate with the team.</p></div>
+        <div class="card"><h3>Do Not</h3><p>Argue, leak information, abuse permissions, favor friends, or make emotional decisions.</p></div>
+      </div>
+    </section>
+
+    <section class="searchable fade-in editable" id="discipline">
+      <span class="badge">Accountability</span>
+      <h2>Staff Discipline</h2>
+      <p>Staff members are held to a higher standard because they represent the server. Misconduct may lead to warnings, strikes, demotion, removal, or bans depending on severity.</p>
+      <div class="punishment-grid">
+        <div class="punish-card"><h4>Minor Issues</h4><p>Coaching, reminder, or verbal warning.</p></div>
+        <div class="punish-card"><h4>Repeated Issues</h4><p>Strike, temporary permission restriction, or demotion.</p></div>
+        <div class="punish-card"><h4>Serious Issues</h4><p>Immediate removal for leaking, power abuse, favoritism, or staff tool abuse.</p></div>
+      </div>
+    </section>
+
+    <section class="searchable fade-in editable" id="gang-angels">
+      <span class="badge">Gang Angel Rules</span>
+      <h2>Gang Angel Rules</h2>
+      <ul class="rule-list">
+        <li>Only 3 staff per gang.</li><li>Oversight cannot gang play; Support can.</li><li>No switching gangs without management approval.</li><li>Staff cannot be gang leaders, shot-callers, recruiters, war leaders, or alliance makers.</li><li>Staff duties come first.</li><li>Trial staff cannot join a gang until accepted.</li><li>Staff cannot moderate cases involving their gang/allies unless assigned.</li><li>No staff tools, spawning, or advantages for gangs.</li><li>Gang activity must be clipped and posted in the correct gang angel chat.</li><li>Failure to provide clips may result in a strike.</li><li>Staff receive double penalties and lower strike limits.</li><li>No retaliation for reports. Cheating results in cross-ban and staff removal.</li>
+      </ul>
+    </section>
+
+    <section class="searchable fade-in editable" id="commands">
+      <span class="badge">Commands</span>
+      <h2>Command Guide</h2>
+      <p>Commands help staff manage reports, players, reimbursements, and city tools. Extra tools may be found in <code>/adminmenu</code> or the <code>U</code> keybind.</p>
+      <div class="accordion">
+        <details open><summary>Mod Commands</summary><div class="inside"><div class="command-grid uniform-grid">
+          <div class="cmd-card"><code>/bring [ID]</code><span>Bring player to your location.</span></div>
+          <div class="cmd-card"><code>/bringback [ID]</code><span>Send player back after using bring.</span></div>
+          <div class="cmd-card"><code>/freeze [ID]</code><span>Freeze a player.</span></div>
+          <div class="cmd-card"><code>/clearall</code><span>Clear chat for all players.</span></div>
+          <div class="cmd-card"><code>/staff</code><span>Create a serverwide staff announcement.</span></div>
+          <div class="cmd-card"><code>/so</code><span>Send a staff-only in-game message.</span></div>
+          <div class="cmd-card"><code>/clothing [ID]</code><span>Give clothing menu to a player.</span></div>
+          <div class="cmd-card"><code>/reports</code><span>Open the reports menu.</span></div>
+          <div class="cmd-card"><code>/adminmenu</code><span>Open the admin/snipe menu.</span></div>
+          <div class="cmd-card"><code>/cms [ID]</code><span>Send player to community service.</span></div>
+          <div class="cmd-card"><code>/endcms [ID]</code><span>End player community service.</span></div>
+          <div class="cmd-card"><code>/kick [ID] [reason]</code><span>Kick player with a visible reason.</span></div>
+          <div class="cmd-card"><code>/coordsx</code><span>Check coordinates and vectors.</span></div>
+        </div></div></details>
+        <details><summary>Admin Commands</summary><div class="inside"><div class="command-grid uniform-grid">
+          <div class="cmd-card"><code>/tp [ID|coords]</code><span>Teleport to a player or coordinates.</span></div>
+          <div class="cmd-card"><code>/tpm</code><span>Teleport to your map marker.</span></div>
+          <div class="cmd-card"><code>/car [spawncode]</code><span>Spawn a vehicle.</span></div>
+          <div class="cmd-card"><code>/warp</code><span>Place yourself in the nearest vehicle.</span></div>
+          <div class="cmd-card"><code>/givemoney [ID] [amount]</code><span>Give money to a player.</span></div>
+          <div class="cmd-card"><code>/setmoney [ID] [amount]</code><span>Set a player’s money amount.</span></div>
+          <div class="cmd-card"><code>/deletemoney [amount]</code><span>Delete money from bank or cash.</span></div>
+          <div class="cmd-card"><code>/setjob [ID] [job]</code><span>Set a player’s job.</span></div>
+          <div class="cmd-card"><code>/setgang [ID] [gang]</code><span>Set a player’s gang.</span></div>
+          <div class="cmd-card"><code>/clearinv [ID]</code><span>Clear a player’s inventory.</span></div>
+          <div class="cmd-card"><code>/customs</code><span>Open mechanic menu.</span></div>
+          <div class="cmd-card"><code>/giveitem [ID] [item] [amount]</code><span>Give item to a player.</span></div>
+          <div class="cmd-card"><code>/kill [ID]</code><span>Instantly kill a player.</span></div>
+          <div class="cmd-card"><code>/openinv [ID]</code><span>Open a player’s inventory.</span></div>
+          <div class="cmd-card"><code>/pullstash [ID]</code><span>Open a player’s stash.</span></div>
+          <div class="cmd-card"><code>/revive [ID]</code><span>Revive a player.</span></div>
+          <div class="cmd-card"><code>/givecar [spawncode] [ID]</code><span>Add vehicle to player garage.</span></div>
+          <div class="cmd-card"><code>/vehicle-delete [plate]</code><span>Delete vehicle from garage.</span></div>
+          <div class="cmd-card"><code>/toggleverified birdy [username] [1|0]</code><span>Verify or remove Birdy verification.</span></div>
+          <div class="cmd-card"><code>/tx [ID]</code><span>Display information for a player ID.</span></div>
+          <div class="cmd-card"><code>/doorlock</code><span>Access door lock menu.</span></div>
+          <div class="cmd-card"><code>/doorlocks cl</code><span>Lock the closest door.</span></div>
+          <div class="cmd-card"><code>/createcomp</code><span>Create compensation stash.</span></div>
+          <div class="cmd-card"><code>/opencompstash</code><span>Open compensation stash.</span></div>
+          <div class="cmd-card"><code>/reimburse</code><span>Open vehicle reimbursement menu.</span></div>
+          <div class="cmd-card"><code>/wipestash</code><span>Clear stash completely.</span></div>
+          <div class="cmd-card"><code>/wipeplayer</code><span>Clear pockets, bank, and cash.</span></div>
+          <div class="cmd-card"><code>/takeinv [ID]</code><span>Confiscate inventory.</span></div>
+          <div class="cmd-card"><code>/restoreinv [ID]</code><span>Restore confiscated inventory.</span></div>
+          <div class="cmd-card"><code>/mute [ID]</code><span>Mute a player.</span></div>
+          <div class="cmd-card"><code>/unmute [ID]</code><span>Unmute a player.</span></div>
+          <div class="cmd-card"><code>/vehicle-return</code><span>Return lost DV car to garage.</span></div>
+        </div></div></details>
+        <details><summary>Senior & Head Admin Commands</summary><div class="inside"><div class="command-grid uniform-grid">
+          <div class="cmd-card"><code>/adminoptions</code><span>Open admin options menu.</span></div>
+          <div class="cmd-card"><code>/removecar [plate]</code><span>Delete vehicle by plate.</span></div>
+          <div class="cmd-card"><code>/rr [radius]</code><span>Revive players in radius.</span></div>
+          <div class="cmd-card"><code>/godgive</code><span>Open God Give item menu.</span></div>
+          <div class="cmd-card"><code>/vehicle-plate [plate] [ID]</code><span>Manually set license plate.</span></div>
+          <div class="cmd-card"><code>/storages</code><span>Open storage menu.</span></div>
+          <div class="cmd-card"><code>/doorlocks</code><span>Lock doors in general.</span></div>
+          <div class="cmd-card"><code>/pedmenu [ID]</code><span>Give clothing store menu.</span></div>
+          <div class="cmd-card"><code>/feed [ID]</code><span>Fill player hunger and thirst.</span></div>
+          <div class="cmd-card"><code>/weather [type]</code><span>Change weather in city.</span></div>
+          <div class="cmd-card"><code>/time [hour] [minute]</code><span>Change city time.</span></div>
+          <div class="cmd-card"><code>/economy</code><span>Open economy menu.</span></div>
+        </div></div></details>
+      </div>
+    </section>
+
+    <section class="searchable fade-in editable" id="oversight">
+      <span class="badge">Oversight</span>
+      <h2>Oversight Info</h2>
+      <p>This section outlines oversight areas and who handles them.</p>
+      <div class="table-wrap"><table><tr><th>Oversight</th><th>Assigned</th></tr><tr><td>Business Oversight</td><td>N/A</td></tr><tr><td>PD Oversight</td><td>Elenore</td></tr><tr><td>EMS Oversight</td><td>Athena</td></tr><tr><td>DOJ Oversight</td><td>Nessa</td></tr><tr><td>Faction Oversight</td><td>N/A</td></tr><tr><td>Housing Oversight</td><td>Nessa</td></tr><tr><td>Vehicle Oversight</td><td>Mace</td></tr><tr><td>Events Oversight</td><td>N/A</td></tr><tr><td>Car Crew Oversight</td><td>N/A</td></tr></table></div>
+    </section>
+
+    <section class="searchable fade-in editable" id="punishment">
+      <span class="badge">Player Handling</span>
+      <h2>Punishment & Player Handling</h2>
+      <p>Staff are responsible for protecting server integrity while keeping punishments fair, consistent, and professional. Player handling is not only about enforcing rules; it is also about helping players understand expectations and make better choices.</p>
+      <div class="callout">Always balance authority, diplomacy, respect, and accountability.</div>
+    </section>
+
+    <section class="searchable fade-in editable" id="ban-guidelines">
+      <span class="badge">Ban Guidelines</span>
+      <h2>Ban Guidelines</h2>
+      <div class="callout danger"><strong>Important:</strong> Punishments do not stack. Apply the highest offense and do not ban longer than the listed punishment.</div>
+      <div class="accordion">
+        <details open><summary>NITRP</summary><div class="inside"><p>1st: Warning + 150 Comms<br>2nd: 1 Day Ban<br>3rd: 2 Day Ban<br>4th: Perma</p></div></details>
+        <details><summary>RDM / VDM</summary><div class="inside"><p>1st: Warning + 60 Comms<br>2nd: 150 Comms<br>3rd: 200 Comms + 100k Fine<br>4th: 300 Comms + 500k Fine<br>5th: Perma</p></div></details>
+        <details><summary>Meta Gaming</summary><div class="inside"><p>1st: Warning + 60 Comms<br>2nd: 150 Comms + 100k Fine<br>3rd: 200 Comms + 300k Fine<br>4th: 400 Comms + 500k Fine<br>5th: Perma</p></div></details>
+        <details><summary>Cop Baiting</summary><div class="inside"><p>1st: Warning<br>2nd: 25 Comms<br>3rd: 100 Comms + 50k Fine<br>4th: 175 Comms + 100k Fine<br>5th: Perma</p></div></details>
+        <details><summary>Fail RP / NVL</summary><div class="inside"><p>1st: Warning + 100/60 Comms<br>2nd: 150 Comms + 25k Fine<br>3rd: 200 Comms + 50k Fine<br>4th: 350 Comms + 100k Fine<br>5th: Perma</p></div></details>
+        <details><summary>OOC / Power Gaming</summary><div class="inside"><p>OOC: Warning + 25 Comms then escalating day bans.<br>Power Gaming: Warning + 60 Comms then escalating day bans. Government job abuse may include pocket wipe.</p></div></details>
+        <details><summary>Exploiting / Monetary Exploiting / Duping / F8ing / Slurs / Super Civing / Graphic Packs</summary><div class="inside"><div class="punishment-grid">
+          <div class="punish-card"><h4>Exploiting</h4><p><strong>1st:</strong> 1 Day Ban + 60 Comms</p><p><strong>2nd:</strong> 2 Day Ban + 50 Comms</p><p><strong>3rd:</strong> 3 Day Ban + 50 Comms</p><p><strong>4th:</strong> Permanent Ban</p></div>
+          <div class="punish-card"><h4>Monetary Exploiting</h4><p><strong>1st:</strong> 1 Week Ban + Full Bank Wipe</p><p><strong>2nd:</strong> 2 Week Ban + Full Character Wipe</p><p><strong>3rd:</strong> Permanent Ban</p></div>
+          <div class="punish-card"><h4>Duping</h4><p><strong>1st:</strong> 1 Week Ban</p><p><strong>2nd:</strong> Permanent Ban</p></div>
+          <div class="punish-card"><h4>F8ing</h4><p><strong>1st:</strong> Warning + 100 Comms + Pocket Wipe</p><p><strong>2nd:</strong> 2 Day Ban + Pocket/Money/Bank Wipe + 50 Comms</p><p><strong>3rd:</strong> 5 Day Ban + Soul Deletion + 50 Comms</p><p><strong>4th:</strong> Permanent Ban</p></div>
+          <div class="punish-card"><h4>Slurs</h4><p><strong>1st:</strong> Warning + 50 Comms</p><p><strong>2nd:</strong> 1 Day Ban + 50 Comms</p><p><strong>3rd:</strong> 2 Day Ban + 50 Comms</p><p><strong>4th:</strong> Permanent Ban</p></div>
+          <div class="punish-card"><h4>Super Civing</h4><p><strong>1st:</strong> Warning + 50 Comms</p><p><strong>2nd:</strong> 275 Comms + 50k Fine</p><p><strong>3rd:</strong> 300 Comms + 150k Fine</p><p><strong>4th:</strong> 300 Comms + 250k Fine</p><p><strong>5th:</strong> Permanent Ban</p></div>
+          <div class="punish-card"><h4>Graphic Packs</h4><p><strong>Senior Admin+ Required</strong></p><p><strong>1st:</strong> Warning / Temp Ban for Removal</p><p><strong>2nd:</strong> 75 Comms + 50k Fine</p><p><strong>3rd:</strong> 175 Comms + 150k Fine</p><p><strong>4th:</strong> Permanent Ban</p></div>
+        </div></div></details>
+      </div>
+    </section>
+
+    <section class="searchable fade-in editable" id="community-service">
+      <span class="badge">CMS</span>
+      <h2>Community Service</h2>
+      <p>Community Service is used to correct disruptive behavior while giving the player a chance to remain in the city.</p>
+      <div class="grid"><div class="card"><h3>Assign</h3><p><code>/cms [id] [amount]</code></p></div><div class="card"><h3>Monitor</h3><p>Explain why it was assigned and answer questions.</p></div><div class="card"><h3>Complete</h3><p><code>/endcms [id] [amount]</code></p></div></div>
+    </section>
+
+    <section class="searchable fade-in editable" id="appeals">
+      <span class="badge">Review Process</span>
+      <h2>Appeals Process</h2>
+      <ul class="rule-list">
+        <li>Players may appeal eligible punishments through the proper appeal form or ticket.</li>
+        <li>Appeals should be reviewed by staff who were not directly involved when possible.</li>
+        <li>Staff should review clips, logs, prior history, and the original reason for punishment.</li>
+        <li>Appeal outcomes should be explained clearly and professionally.</li>
+        <li>Not all punishments are appealable, depending on the offense and guideline.</li>
+      </ul>
+    </section>
+
+    <section class="searchable fade-in editable" id="evidence">
+      <span class="badge">Clips & Proof</span>
+      <h2>Evidence & Clip Requirements</h2>
+      <div class="grid">
+        <div class="card"><h3>Standard Clips</h3><p>Clips should be at least 2 minutes long and include IDs when possible.</p></div>
+        <div class="card"><h3>Exceptions</h3><p>Cheating, slurs, exploits, and some F8 clips may be shorter if the evidence is clear.</p></div>
+        <div class="card"><h3>Bad Evidence</h3><p>Multiple tiny clips, missing context, no IDs, or cropped evidence may not be accepted.</p></div>
+      </div>
+      <div class="callout">Evidence should show context before, during, and after the rule break.</div>
+    </section>
+
+    <section class="searchable fade-in editable" id="refunds">
+      <span class="badge">Compensation</span>
+      <h2>Refunds & Compensation Rules</h2>
+      <ul class="rule-list">
+        <li>Refunds should only be given when there is proper proof.</li>
+        <li>Do not reimburse based on verbal claims alone unless management approves.</li>
+        <li>Use compensation stash tools when required by the ticket.</li>
+        <li>Document what was given, why it was given, and who approved it.</li>
+        <li>When unsure, escalate to Admin+ before issuing compensation.</li>
+      </ul>
+    </section>
+
+    <section class="searchable fade-in editable" id="tickets">
+      <span class="badge">Ticket Etiquette</span>
+      <h2>Ticket Etiquette</h2>
+      <p>Tickets are the main place players ask for help, report issues, or request support. Staff should keep every ticket respectful, organized, and professional.</p>
+      <div class="callout">A well-handled ticket can still leave a player feeling respected, even if the outcome is not what they wanted.</div>
+    </section>
+
+    <section class="searchable fade-in editable" id="ticket-rules">
+      <span class="badge">Ticket Rules</span>
+      <h2>Ticketing Rules</h2>
+      <ul class="rule-list"><li>Only one staff member handles a ticket at a time.</li><li>If the assigned staff does not respond within 30 minutes, another staff may take over unless requested/tagged.</li><li>Read the entire ticket before stepping in.</li><li>Remain neutral. If you have personal issues with a player, do not handle it.</li><li>Clips must be at least 2 minutes with IDs, except cheating, profane language, and some F8 scenarios.</li><li>Do not argue, use sarcasm, or make unnecessary comments.</li><li>If escalation is needed, tag the next in command.</li><li>If the ticket involves you, friends, or gang members, do not engage.</li><li>Ticket and admin chat information is confidential.</li><li>Respond to tickets promptly.</li></ul>
+    </section>
+
+    <section class="searchable fade-in editable" id="templates">
+      <span class="badge">Copy & Paste</span>
+      <h2>Ticket Templates</h2>
+      <div class="accordion">
+        <details open><summary>Greeting Template</summary><div class="inside"><div class="callout">Hey! Thank you for opening a ticket. Please explain what happened and send any clips, screenshots, IDs, or details you have so we can look into this properly.</div></div></details>
+        <details><summary>Evidence Request</summary><div class="inside"><div class="callout">Could you please send a clip that shows at least 2 minutes of context and includes player IDs if possible? This helps us review the situation fairly.</div></div></details>
+        <details><summary>Escalation Message</summary><div class="inside"><div class="callout">I’m going to bring this to a higher staff member so we can make sure it is handled correctly. Please be patient while we review everything.</div></div></details>
+        <details><summary>Closing Message</summary><div class="inside"><div class="callout">This ticket has been reviewed and handled. If you have any new evidence or further concerns, please open a new ticket. Thank you for reaching out.</div></div></details>
+        <details><summary>Warning Message</summary><div class="inside"><div class="callout">After reviewing the situation, this will be handled as a warning. Please make sure to review the rules so this does not happen again.</div></div></details>
+        <details><summary>Ban Message</summary><div class="inside"><div class="callout danger">After reviewing the evidence and guidelines, a ban has been issued for this situation. You may appeal if the punishment is eligible for appeal.</div></div></details>
+      </div>
+    </section>
+
+    <section class="searchable fade-in editable" id="faq">
+      <span class="badge">Help</span>
+      <h2>Staff FAQ</h2>
+      <div class="accordion">
+        <details><summary>What if I do not know the answer?</summary><div class="inside"><p>Be honest. Tell the player you are going to confirm with higher staff before answering.</p></div></details>
+        <details><summary>What if a friend breaks a rule?</summary><div class="inside"><p>Treat them like any other player or pass the situation to another staff member if you feel biased.</p></div></details>
+        <details><summary>What if a player is disrespectful?</summary><div class="inside"><p>Stay professional. Do not argue. Warn them if needed and escalate if they continue.</p></div></details>
+        <details><summary>Can I use staff powers while roleplaying?</summary><div class="inside"><p>No. Staff powers are for staff duties only and should never create an RP advantage.</p></div></details>
+      </div>
+    </section>
+
+    <section class="searchable fade-in editable" id="ranks">
+      <span class="badge">Ranks</span>
+      <h2>Staff Ranking & Expectations</h2>
+      <div class="grid"><div class="card"><h3>Trial Support / Trial Moderator</h3><p>Learn tickets, logs, reports, support basics, and procedures.</p></div><div class="card"><h3>Support / Moderator</h3><p>Handle player issues, rule breaks, and in-city support calmly.</p></div><div class="card"><h3>Admin</h3><p>Use higher powers responsibly and guide lower staff.</p></div><div class="card"><h3>Senior Admin</h3><p>Handle complex issues and mentor the team.</p></div><div class="card"><h3>Head Admin & Above</h3><p>Oversee staff operations, policies, appeals, and major decisions.</p></div><div class="card"><h3>All Staff</h3><p>Professionalism, fairness, communication, rule enforcement, accountability, and teamwork.</p></div></div>
+    </section>
+
+    <footer>☾ Nightshade Staff Guide • Order within the shadows ☾</footer>
+  </main>
+</div>
+
+<script>
+  const searchInput = document.getElementById('searchInput');
+  const searchable = document.querySelectorAll('.searchable');
+  const editBtn = document.getElementById('editBtn');
+  const saveBtn = document.getElementById('saveBtn');
+  const resetBtn = document.getElementById('resetBtn');
+  const editableBlocks = document.querySelectorAll('.editable');
+  const storageKey = 'nightshade-staff-guide-html';
+
+  searchInput.addEventListener('input', () => {
+    const value = searchInput.value.toLowerCase().trim();
+    searchable.forEach(section => {
+      const match = section.innerText.toLowerCase().includes(value);
+      section.classList.toggle('hidden', value && !match);
+    });
+  });
+
+  function setEditMode(on){
+    document.body.classList.toggle('edit-mode', on);
+    editableBlocks.forEach(block => block.setAttribute('contenteditable', on ? 'true' : 'false'));
+    editBtn.textContent = on ? '✅ Editing On' : '✏️ Edit';
+  }
+
+  editBtn.addEventListener('click', () => {
+    setEditMode(!document.body.classList.contains('edit-mode'));
+  });
+
+  saveBtn.addEventListener('click', () => {
+    const mainContent = document.querySelector('main').innerHTML;
+    localStorage.setItem(storageKey, mainContent);
+    setEditMode(false);
+    alert('Saved! Your edits will stay on this browser.');
+  });
+
+  resetBtn.addEventListener('click', () => {
+    if(confirm('Reset this guide back to the original code?')){
+      localStorage.removeItem(storageKey);
+      location.reload();
+    }
+  });
+
+  const saved = localStorage.getItem(storageKey);
+  if(saved){
+    document.querySelector('main').innerHTML = saved;
+  }
+
+  const fadeItems = document.querySelectorAll('.fade-in');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting){
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, {threshold:.12});
+  fadeItems.forEach(item => observer.observe(item));
+</script>
+</body>
+</html>
